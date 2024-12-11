@@ -1,0 +1,48 @@
+;; ------------------------------------------------------------------
+;;                      Emacs Configuration File
+;; ------------------------------------------------------------------
+
+(when (>= emacs-major-version 29)
+      (require 'package)
+      (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+      (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
+      (add-to-list 'package-archives '("elpa" . "https://stable.melpa.org/packages/") t)
+      (package-initialize))
+
+(unless package-archive-contents
+ 	(package-refresh-contents))
+
+
+;; ------------------- General look and behaviour -------------------
+
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(blink-cursor-mode -1)
+
+(set-fringe-mode 5)
+
+(setq visible-bell t)
+(global-font-lock-mode t)
+(transient-mark-mode t)
+(column-number-mode t)
+(show-paren-mode t)
+(global-display-line-numbers-mode t)
+(column-number-mode t)
+
+(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+
+;; ------------------------------ General Packages --------------------------------
+
+(unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+
+
+   
