@@ -2,47 +2,222 @@
 ;;                      Emacs Configuration File
 ;; ------------------------------------------------------------------
 
-(when (>= emacs-major-version 29)
-      (require 'package)
-      (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-      (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-      (add-to-list 'package-archives '("elpa" . "https://stable.melpa.org/packages/") t)
-      (package-initialize))
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+;; -------------------------------
+;; Performance Optimizations
+;; -------------------------------
+(setq gc-cons-threshold 100000000)   ;; Increase garbage collection threshold
+(setq read-process-output-max (* 1024 1024)) ;; Increase read size for LSP
+
+;; -------------------------------
+;; Backup and Autosave Settings
+;; -------------------------------
+(let ((backup-dir (concat user-emacs-directory "backups/"))
+      (auto-save-dir (concat user-emacs-directory "auto-save/")))
+  (unless (file-exists-p backup-dir)
+    (make-directory backup-dir))
+  (unless (file-exists-p auto-save-dir)
+    (make-directory auto-save-dir)))
+
+;; Add to prevent cluttering directories with backup files
+(setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
+(setq auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+
+;; -------------------------------
+;; Basic UI Tweaks
+;; -------------------------------
+(menu-bar-mode -1)       ;; Disable the menu bar
+(scroll-bar-mode -1)     ;; Disable the scroll bar
+(tool-bar-mode -1)       ;; Disable the tool bar
+(blink-cursor-mode -1)   ;; Disable blinking cursor
+(set-fringe-mode 5)      ;; Add small margins on the sides
+
+(setq inhibit-startup-message t) ;; Disable the startup message
+(setq initial-scratch-message nil) ;; Remove the initial message in *scratch*
+(setq visible-bell t)             ;; Enable visual bell
+(global-font-lock-mode t)         ;; Enable syntax highlighting
+(transient-mark-mode t)           ;; Highlight selected region
+(column-number-mode t)            ;; Show column numbers
+(global-display-line-numbers-mode t) ;; Show line numbers globally
+(show-paren-mode t)               ;; Highlight matching parentheses
+(electric-pair-mode 1)            ;; Auto-close brackets and quotes
+
+(add-to-list 'default-frame-alist '(fullscreen . fullboth)) ;; Start in fullscreen mode
+(fset 'yes-or-no-p 'y-or-n-p)      ;; Replace "yes or no" prompts with "y or n"
+
+;; -------------------------------
+;; Package Management
+;; -------------------------------
+(require 'package)
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")))
+(package-initialize)
 
 (unless package-archive-contents
- 	(package-refresh-contents))
-
-
-;; ------------------- General look and behaviour -------------------
-
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(blink-cursor-mode -1)
-
-(set-fringe-mode 5)
-
-(setq visible-bell t)
-(global-font-lock-mode t)
-(transient-mark-mode t)
-(column-number-mode t)
-(show-paren-mode t)
-(global-display-line-numbers-mode t)
-(column-number-mode t)
-
-(add-to-list 'default-frame-alist '(fullscreen . fullboth))
-
-(fset 'yes-or-no-p 'y-or-n-p)
-
-
-;; ------------------------------ General Packages --------------------------------
+  (package-refresh-contents))
 
 (unless (package-installed-p 'use-package)
-	(package-refresh-contents)
-	(package-install 'use-package))
+  (package-install 'use-package))
+
 (require 'use-package)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure t) ;; Automatically install missing packages
 
+;; -------------------------------
+;; Core Enhancements
+;; -------------------------------
+(use-package ivy
+  :config
+  (ivy-mode 1))                     ;; Enable Ivy for completion and navigation
 
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit) ;; Map <escape> to quit prompts
 
-   
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                shell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0)))) ;; Disable line numbers in specific modes
+
+;; -------------------------------
+;; Visual Enhancements
+;; -------------------------------
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode)) ;; Highlight matching parentheses and brackets in different colors
+
+(use-package which-key
+  :init (which-key-mode)            ;; Show possible keybindings in a popup
+  :diminish which-key-mode          ;; Hide minor mode in the mode line
+  :config
+  (setq which-key-idle-delay 0.5))  ;; Delay before the popup appears
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)      ;; Enable a sleek modeline
+  :custom ((doom-modeline-height 15)))
+
+(use-package all-the-icons)         ;; Icons for modeline and file explorers
+
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t    ;; Enable bold fonts
+        doom-themes-enable-italic t) ;; Enable italic fonts
+  (load-theme 'doom-moonlight t)     ;; Load preferred theme
+
+  ;; Additional Doom Themes configurations
+  (doom-themes-visual-bell-config)  ;; Enable visual bell for errors
+  (doom-themes-neotree-config)      ;; Customize neotree theme
+  (setq doom-themes-treemacs-theme "doom-atom") ;; Customize Treemacs theme
+  (doom-themes-treemacs-config)
+  (doom-themes-org-config))         ;; Improve Org-mode fontification
+
+;; -------------------------------
+;; Productivity Enhancements
+;; -------------------------------
+(use-package counsel
+  :bind (("M-x" . counsel-M-x)       ;; Enhanced M-x experience
+         ("C-x b" . counsel-ibuffer) ;; Enhanced buffer switching
+         ("C-x C-f" . counsel-find-file)) ;; Enhanced file finding
+  :config (setq ivy-initial-inputs-alist nil)) ;; Disable prefilled input in Ivy
+
+(use-package ivy-rich
+  :init (ivy-rich-mode 1))           ;; Add more context to Ivy menus
+
+(use-package magit
+  :commands (magit-status magit-get-current-branch) ;; Git interface
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+(use-package company
+  :ensure t
+  :diminish  ; Don't show in modeline
+  :hook (after-init . global-company-mode)
+  :custom
+  (company-minimum-prefix-length 1)    ; Show suggestions after 1 character
+  (company-idle-delay 0.1)            ; Show suggestions quickly
+  (company-tooltip-align-annotations t)) ; Align annotations to the right
+
+(use-package company-box
+  :ensure t
+  :hook (company-mode . company-box-mode)
+  :custom
+  (company-box-icons-alist 'company-box-icons-all-the-icons)
+  (company-box-doc-enable t))
+
+(use-package flycheck
+  :ensure t
+  :diminish
+  :init (global-flycheck-mode)
+  :custom
+  (flycheck-check-syntax-automatically '(save mode-enabled))) ; Check on save
+
+;; -------------------------------
+;; Language Server Protocol (LSP)
+;; -------------------------------
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ; Easy access prefix key
+  :hook
+  ((python-mode . lsp-deferred)      ; Enable LSP for Python
+   (c-mode . lsp-deferred)           ; Enable LSP for C
+   (c++-mode . lsp-deferred))        ; Enable LSP for C++
+  :custom
+  ;; Performance optimizations
+  (lsp-idle-delay 0.2)
+  (lsp-log-io nil)
+  (read-process-output-max (* 1024 1024))
+  (gc-cons-threshold 100000000)
+  ;; Integrations
+  (lsp-completion-provider :capf)     ; Use capf for completion
+  (lsp-diagnostics-provider :flycheck) ; Use flycheck for diagnostics
+  :config
+  ;; Use flycheck and company
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode
+  :custom
+  (lsp-ui-doc-enable t)              ; Enable documentation
+  (lsp-ui-doc-position 'at-point)    ; Show docs at point
+  (lsp-ui-sideline-enable t)         ; Enable sideline info
+  (lsp-ui-sideline-show-diagnostics t)) ; Show diagnostics in sideline
+
+(use-package lsp-pyright
+  :ensure t
+  :after lsp-mode
+  :custom
+  (lsp-pyright-auto-search-paths t)   ; Auto-detect virtualenvs
+  (lsp-pyright-use-venv-path t))      ; Use virtualenv python
+  
+(use-package ccls
+  :ensure t
+  :hook ((c-mode c++-mode) . (lambda ()
+                              (require 'ccls)
+                              (lsp-deferred)))
+  :custom
+  (ccls-initialization-options
+   '(:index (:comments 2)
+     :completion (:detailedLabel t)))
+  :config
+  ;; Integration with C/C++-specific company backends
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends '(company-capf company-files))))
+
+;; -------------------------------
+;; Project and File Management
+;; -------------------------------
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap ("C-c p" . projectile-command-map))
+
+(use-package treemacs
+  :bind (("C-c t" . treemacs))
+  :config
+  (setq treemacs-width 30))
+
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :config (treemacs-icons-dired-mode))
