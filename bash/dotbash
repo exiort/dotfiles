@@ -1,0 +1,55 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Add common paths to the PATH environment variable
+# Remove the extra colon (:) to prevent any empty PATH entries.
+export PATH=$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$PATH
+
+# Enable bash completion
+# This allows tab-completion for commands, files, and more.
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+# Customize the prompt (PS1) to include:
+# - Username (\u)
+# - Hostname (\h)
+# - Working directory (\w)
+# - Git branch if available (requires git-prompt.sh)
+# - Return code of the last command for debugging ($?)
+# - Colors for readability
+PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[33m\]$(__git_ps1 " (%s)")\[\e[0m\]\$ '
+
+# Enable Git branch detection (requires git-prompt.sh)
+# This script shows the current Git branch in the prompt when you're in a Git repository.
+if [ -f /usr/share/git/completion/git-prompt.sh ]; then
+    . /usr/share/git/completion/git-prompt.sh
+fi
+
+# Common aliases for ease of use:
+alias ll='ls -alF'       # Long listing format with hidden files
+alias la='ls -A'         # List all files except . and ..
+alias l='ls -CF'         # Column listing format
+alias grep='grep --color=auto'  # Highlight matches in grep for better readability
+
+# Command history settings:
+# Show timestamps in history (date and time)
+HISTTIMEFORMAT="%F %T "
+# Append to the history file instead of overwriting it after each session
+shopt -s histappend
+# Increase the history size to store more commands (optional based on your preference)
+HISTSIZE=5000
+HISTFILESIZE=10000
+
+# Informational Comments:
+# - The PATH variable adds the directories for executables to be found.
+# - Bash completion enables enhanced terminal functionality.
+# - The PS1 prompt is customized to show Git info, and the return code of the last command, which is helpful for debugging.
+# - Aliases make commonly used commands shorter and more intuitive.
+# - The history settings ensure command history is timestamped, persistent across sessions, and stores a large number of commands.
