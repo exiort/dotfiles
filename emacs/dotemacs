@@ -45,7 +45,7 @@
 (show-paren-mode t)               ;; Highlight matching parentheses
 (electric-pair-mode 1)            ;; Auto-close brackets and quotes
 
-(add-to-list 'default-frame-alist '(fullscreen . fullboth)) ;; Start in fullscreen mode
+;;(add-to-list 'default-frame-alist '(fullscreen . fullboth)) ;; Start in fullscreen mode
 (fset 'yes-or-no-p 'y-or-n-p)      ;; Replace "yes or no" prompts with "y or n"
 
 ;; -------------------------------
