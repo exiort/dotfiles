@@ -222,3 +222,103 @@
 (use-package treemacs-icons-dired
   :after treemacs dired
   :config (treemacs-icons-dired-mode))
+
+;; -------------------------------
+;; Org Mode Configuration
+;; -------------------------------
+;; -------------------------------
+;; Org Mode Configuration
+;; -------------------------------
+(use-package org
+  :ensure t
+  :hook ((org-mode . visual-line-mode)  ; Enable visual line mode for better writing
+         (org-mode . org-indent-mode))  ; Enable automatic indentation
+  :custom
+  ;; Basic Setup
+  (org-directory "~/org")              ; Set default org directory
+  (org-default-notes-file "~/org/notes.org")
+  (org-hide-emphasis-markers t)        ; Hide formatting characters
+  (org-pretty-entities t)              ; Show UTF8 characters
+  (org-use-speed-commands t)           ; Enable speed commands
+  (org-completion-use-ido nil)         ; Use ivy/counsel instead of ido
+  
+  ;; Todo Keywords and States
+  (org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "IN-PROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (org-todo-keyword-faces
+   '(("TODO" . (:foreground "red" :weight bold))
+     ("NEXT" . (:foreground "blue" :weight bold))
+     ("IN-PROGRESS" . (:foreground "yellow" :weight bold))
+     ("WAITING" . (:foreground "orange" :weight bold))
+     ("DONE" . (:foreground "green" :weight bold))
+     ("CANCELLED" . (:foreground "gray" :weight bold))))
+  
+  ;; Capture Templates
+  (org-capture-templates
+   '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
+      "* TODO %?\n  %i\n  %a" :prepend t)
+     ("n" "Note" entry (file+headline "~/org/notes.org" "Notes")
+      "* %?\n  %i\n  %a" :prepend t)
+     ("j" "Journal" entry (file+datetree "~/org/journal.org")
+      "* %?\nEntered on %U\n  %i\n  %a")))
+  
+  ;; Agenda Setup
+  (org-agenda-files '("~/org/"))
+  (org-agenda-span 'day)
+  (org-agenda-start-on-weekday nil)
+  (org-agenda-start-day "-0d")
+  
+  :bind
+  (("C-c a" . org-agenda)
+   ("C-c c" . org-capture)
+   ("C-c l" . org-store-link)
+   :map org-mode-map
+   ("C-c t" . org-insert-structure-template)))
+
+;; Enhance Org Mode with Additional Packages
+(use-package org-bullets
+  :ensure t
+  :after org
+  :hook (org-mode . org-bullets-mode))
+
+(use-package org-appear
+  :ensure t
+  :after org
+  :hook (org-mode . org-appear-mode)
+  :custom
+  (org-appear-autolinks t))
+
+(use-package org-modern
+  :ensure t
+  :after org
+  :hook
+  (org-mode . org-modern-mode)
+  (org-agenda-finalize . org-modern-agenda)
+  :custom
+  (org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶"))
+  (org-modern-table-vertical 1)
+  (org-modern-table-horizontal 0.2)
+  (org-modern-list '((43 . "➤") (45 . "–") (42 . "•"))))
+
+;; Enable Auto-save for Org Files
+(defun my/auto-save-org-mode-buffers ()
+  "Auto-save all org-mode buffers."
+  (interactive)
+  (save-some-buffers t (lambda ()
+                         (derived-mode-p 'org-mode))))
+(add-hook 'focus-out-hook #'my/auto-save-org-mode-buffers)
+
+;; Add Support for Code Block Syntax Highlighting
+(setq org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-confirm-babel-evaluate nil
+      org-edit-src-content-indentation 0)
+
+;; Enable Common Babel Languages
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (emacs-lisp . t)
+     (shell . t)
+     (C . t))))

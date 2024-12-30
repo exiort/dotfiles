@@ -1,0 +1,51 @@
+* {
+    border: none;
+    font-family: Font Awesome, Roboto, Arial, sans-serif;
+    font-size: 13px;
+    color: #ffffff;
+    border-radius: 20px;
+}
+
+window {
+	/*font-weight: bold;*/
+}
+window#waybar {
+    background: rgba(0, 0, 0, 0);
+}
+/*-----module groups----*/
+.modules-right {
+    background-color: rgba(0,43,51,0.85);
+    margin: 2px 10px 0 0;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.modules-center {
+    background-color: rgba(0,43,51,0.85);
+    margin: 2px 0 0 0;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.modules-left {
+    margin: 2px 0 0 10px;
+	background-color: rgba(0,43,51,0.85);
+}
+/*-----modules indv----*/
+#workspaces button {
+    padding: 1px 5px;
+    background-color: transparent;
+}
+#workspaces button:hover {
+    background-color: rgba(105, 2, 142, 1);
+}
+#workspaces button:active {
+    background-color: rgba(105, 2, 142, 1);
+}
+#workspaces button.active {
+    background-color: rgba(105, 2, 142, 1);
+}
+
+
+/* */
+#battery.critical:not(.charging) {
+    color: #cc3436;
+}
