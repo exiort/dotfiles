@@ -8,13 +8,4 @@ This prevents a system-wide spread, which is very hard to maintaince and version
   * A GNU Emacs configuration to provide a powerful text editing environment. Also comes with syntax highlighting, code completion etc. to provide a solid IDE environment.
   * Hyprland configuration to reach a DE that prioritize simplicity and less-mouse interaction.
   * Waybar configuration to provide Hyprland environment's visual representtation requirements, while keeping simplicity as priority.
-
-# ROADMAP
-* General
-  * Creating an installation script to automize creating symbolic links
-  * The configuration must be in home directory (/home/<username>/dotfiles/) due to some of the scripts are hard coded. Integrating a more dynamic pathing approach 
-* Bash
-* Emacs 
-  * Basic and visually satisfying org mode integration.
-* Hyprland
-* Waybar
+  * Dunst configration, it only change pop up place for now.
