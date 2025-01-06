@@ -1,0 +1,11 @@
+emacs
+hyprpaper
+hyprpolkitagent
+waybar
+bash-completion
+
+pyright
+ccls
+
+wireplumber 
+pavucontrol
