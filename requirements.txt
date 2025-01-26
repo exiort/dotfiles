@@ -9,3 +9,8 @@ ccls
 
 wireplumber 
 pavucontrol
+
+cliphist
+grimblast
+
+brightnessctl
