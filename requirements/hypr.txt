@@ -1,0 +1,11 @@
+hyprpaper
+hyprpolkitagent
+waybar
+
+wireplumber
+pavucontrol
+
+cliphist
+grimblast
+
+brightnessctl

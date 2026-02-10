@@ -1,0 +1,54 @@
+// ~/.config/waybar/config
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 20,
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["clock", "tray"],
+    "modules-right": ["pulseaudio", "network", "battery"],
+    
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "on-click": "active",
+        "sort-by-number": true,
+	"tooltip": false
+    },
+    
+    "clock": {
+    	"interval": 1,
+        "format": "{:%H:%M:%S}",
+        "format-alt": "{:%A %d/%m/%Y}",
+	"tooltip": false
+    },
+    
+    "battery": {
+        "states": {
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% 󰂅",
+        "format-icons": ["󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"]
+    },
+    
+    "network": {
+        "format-wifi": "{signalStrength}% {icon}",
+        "format-ethernet": "",
+        "format-disconnected": "󰌙", 
+        "max-length": 50,
+	"format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
+	"tooltip-format": "{ifname} via {gwaddr}"
+    },
+
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        "format-muted": "",
+        "format-icons": ["", "", ""],
+        "tooltip": true,
+        "tooltip-format": "{desc}"
+    },
+
+    "tray": {
+        "spacing": 10
+    }
+}
