@@ -6,10 +6,10 @@ This repository is structured to be easily extensible, allowing for the addition
 
 ## 📋 Table of Contents
 - [Features and Capabilities](#-features-and-capabilities)
-  - [Bash Environment](#bash-environment)
-  - [Hyprland Wayland Compositor](#hyprland-wayland-compositor)
-  - [Emacs Configuration](#emacs-configuration)
-  - [Neovim Configuration](#neovim-configuration)
+  - [Bash Environment](#-bash-environment)
+  - [Hyprland Wayland Compositor](#-hyprland-wayland-compositor)
+  - [Emacs Configuration](#-emacs-configuration)
+  - [Neovim Configuration](#-neovim-configuration)
 - [Dependencies](#-dependencies)
 - [License](#-license)
 
