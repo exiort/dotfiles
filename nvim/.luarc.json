@@ -1,0 +1,6 @@
+{
+  "runtime.version": "LuaJIT",
+  "runtime.path": ["lua/?.lua", "lua/?/init.lua"],
+  "workspace.checkThirdParty": false,
+  "workspace.library": ["$VIMRUNTIME"]
+}
