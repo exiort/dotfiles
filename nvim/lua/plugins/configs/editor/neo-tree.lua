@@ -29,7 +29,7 @@ return {
     },
 
     keys = {
-	    { "<leader>e", "<cmd>Neotree toggle<CR><cmd>wincmd =<CR>", mode = {"n"} },
-        { "<leader>o", "<cmd>Neotree focus<CR>", mode = {"n"} }
+	    { "<leader>e", "<cmd>Neotree toggle<CR><cmd>wincmd =<CR>", mode = {"n"}, desc = "Open Neotree" },
+        { "<leader>o", "<cmd>Neotree focus<CR>", mode = {"n"}, desc = "Focus Neotree" }
     }
 }

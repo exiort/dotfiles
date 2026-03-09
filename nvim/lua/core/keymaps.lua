@@ -6,7 +6,7 @@ g.maplocalleader = " "
 
 
 -- Save and quit
-map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
+map("n", "<leader>s", "<cmd>w<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>Q", "<cmd>qa!<cr>", { desc = "Force quit all" })
 

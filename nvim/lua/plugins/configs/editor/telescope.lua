@@ -8,6 +8,7 @@ return {
     },
 
     keys = {
-	{ "<leader>ff", "<cmd>Telescope<cr>"},
+	{
+        "<leader>ff", "<cmd>Telescope<cr>", desc = "Open Telescope"},
     },
 }
