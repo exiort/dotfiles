@@ -1,3 +1,9 @@
 neovim
 neovide
 wl-clipboard
+
+npm
+
+ttf-hack-nerd
+
+texlive-meta

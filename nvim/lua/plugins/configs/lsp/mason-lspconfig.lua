@@ -8,8 +8,20 @@ return {
 
     opts = {
         ensure_installed = {
+            --Python
             "pyright",
-            "lua_ls"
+            "ruff",
+
+            --C/C++
+            "clangd",
+
+            --Lua
+            "lua_ls",
+
+            --Others
+            "texlab",
+            "marksman",
+            "ltex"
         },
 
         automatic_enable = true

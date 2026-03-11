@@ -9,7 +9,6 @@ return {
 
     opts = {
     	options = {
-	        theme = "catppuccin",
 	        globalstatus = true,
 	    }
     }
