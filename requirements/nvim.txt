@@ -2,8 +2,11 @@ neovim
 neovide
 wl-clipboard
 
+<<<<<<< HEAD
 npm
 
 ttf-hack-nerd
 
+=======
+>>>>>>> c42e4e04f4a9520f49d3412da1fab26e0091bcdf
 texlive-meta
